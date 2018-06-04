@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <link rel="stylesheet" type="text/css" href="default.css">
+      <meta charset="utf-8">
+      <title>Welcome to W.L.S "We Love Snowboarding"</title>
+      <style type="text/css">
+         #formbox { width: 620px;
+         background-color: #66ff33;
+         border: 1px #333;
+         padding: 5px;
+         margin: left;
+         }
+         input[type=text], input[type=tel] {
+         font-family: Helvetica, Arial, sans-serif;
+         border:1px solid #ccc;
+         font-size:20px;
+         width:200px;
+         min-height:30px;
+         display:block;
+         margin-bottom:15px;
+         margin-top:5px;
+         outline: none;
+         -webkit-border-radius:5px;
+         -moz-border-radius:5px;
+         -o-border-radius:5px;
+         -ms-border-radius:5px;
+         border-radius:5px;
+         -moz-transition: padding .25s;
+         -webkit-transition: padding .25s;
+         -o-transition: padding .25s;
+         transition: padding .25s;
+         }
+         #expiry {
+         width:100px;
+         }
+         30. The type = submit and type = reset form elements can be styled with some
+         padding white space and no background:
+         input[type=submit], input[type=reset] {
+         background:none;
+         padding:10px;
+         }
+         31. New CSS3 properties include support for required and invalid form value
+         entries:
+         :invalid {
+         border-color: #e88;
+         -webkit-box-shadow: 0 0 5px rgba(255, 0, 0, .8);
+         -moz-box-shadow: 0 0 5px rgba(255, 0, 0, .8);
+         -o-box-shadow: 0 0 5px rgba(255, 0, 0, .8);
+         -ms-box-shadow: 0 0 5px rgba(255, 0, 0, .8);
+         box-shadow:0 0 5px rgba(255, 0, 0, .8);
+         }
+         :required {
+         border-color: #88a;
+         -webkit-box-shadow: 0 0 5px rgba(0, 0, 255, .5);
+         -moz-box-shadow: 0 0 5px rgba(0, 0, 255, .5);
+         -o-box-shadow: 0 0 5px rgba(0, 0, 255, .5);
+         -ms-box-shadow: 0 0 5px rgba(0, 0, 255, .5);
+         box-shadow: 0 0 5px rgba(0, 0, 255, .5);
+         }
+         input:required:valid {
+         background: #fff url(images/valid.png) no-repeat 98% center;
+         box-shadow: 0 0 5px #5cd053;
+         border-color: #28921f;
+         }
+         input:required {
+         background: #fff url(images/red_asterisk.png)
+         no-repeat 98% center;
+         }
+         input:focus {
+         background: #fff;
+         border: 1px solid #555;
+         box-shadow: 0 0 3px #aaa;
+         padding-right: 20px;
+         }
+         input:focus:invalid {
+         background: #fff url(images/invalid.png) no-repeat 98% center;
+         box-shadow: 0 0 5px #d45252;
+         border-
+         }
+      </style>
+      <script>
+         function myFunction() {
+             var x = document.getElementById("myTopnav");
+             if (x.className === "topnav") {
+                 x.className += " responsive";
+             } else {
+                 x.className = "topnav";
+         
+             }
+         }
+      </script>
+   </head>
+   <body>
+      <header>
+         W.L.S. - "We Love Snowboarding!!"
+      </header>
+      <nav>
+         <ul id="myTopnav" class="topnav">
+            <li><a href="index.html" title="Return to site main page">Home</a></li>
+            <li><a href="about.html" title="Fun Facts about Snowboarding">Fun Facts/Image Gallery</a></li>
+            <li><a href="signup.html" title="Why not join the fun of WLS" class="viewing">Join the W.L.S</a></li>
+         </ul>
+      </nav>
+      <article>
+         <h1><FONT color=green> So you want to become a member?
+            <br> Lets get started!  </FONT>
+         </h1>
+         <form name="signup' formmethod="post"
+            id="formbox"
+            action="script/processform.php">
+         <fieldset>
+            <legend>Become a member of W.L.S</legend>
+            <label>First Name:</label>
+            <input type="text" name="firstname"
+               required id="firstname"
+               placeholder="your first name">
+            <label>Last Name:</label>
+            <input type="text" name="lastname"
+               required id="lastname"
+               placeholder="your last name">
+            <label>Street Address:</label>
+            <input type="text" name="streetaddress"
+               required id="streetaddress"
+               placeholder="Your street address">
+            <label>Province/State:</label>
+            <input type="text" name="provincestate"
+               required id="provincestate"
+               placeholder="Province or state you live">
+            <label>Postal/Zip Code:</label>
+            <input type="text" name="postzip"
+               required id="postzip"
+               placeholder="Your postal/zip code">
+            <label>Email Address:</label>
+            <input type="email" name="emailaddy"
+               required id="emailaddy"
+               placeholder="Your email address">
+            <br>
+            <br>
+            <label>Telephone Number (optional):</label>
+            <input type="tel" name="phone"
+               pattern="[\(]\d{3}[\)]\s*\d{3}[\-]\d{4}"
+               placeholder="(250) 999-9999">
+         </fieldset>
+         <fieldset>
+         <legend> What is your age range?</legend>
+         <input type="radio" name="agerange[]"
+            value="range1" id="range1">
+         <label for="range1">15-18</label>
+         <br>
+         <input type="radio" name="agerange[]"
+            value="range2" id="range2">
+         <label for="range2">19-24</label>
+         <br>
+         <input type="radio" name="agerange[]"
+            value="range3" id="range3">
+         <label for="range3">25-30</label>
+         <br>
+         <input type="radio" name="agerange[]"
+            value="range4" id="range4">
+         <label for="range4">31-39</label>
+         <br>
+         <input type="radio" name="agerange[]"
+            value="range5" id="range5">
+         <label for="range5">40+</label>
+         <br>
+         <fieldset>
+         <legend> Give us some comments or queries</legend>
+         <textarea rows="8" cols="50" name="comments" 
+            id="comments" style="font-family:sans-serif;font-size:1.2em;">
+Questions or concerns would go here!
+</textarea>
+         <input type="submit" name="submit"
+            value="Place Order">
+         <input type="reset" name="reset"
+            value="Reset your info">
+      </article>
+      <footer>
+         <b>Thanks for visiting "We Love Snowboarding" !!!!</b>
+         <br>
+         Copyright © 2016
+      </footer>
+   </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

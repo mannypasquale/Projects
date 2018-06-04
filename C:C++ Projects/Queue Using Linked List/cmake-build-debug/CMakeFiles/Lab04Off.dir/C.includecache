@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab04Off/queue.c
+stdio.h
+-
+stdlib.h
+-
+queue.h
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab04Off/queue.h
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab04Off/queue.h
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab04Off/queueMain.c
+stdio.h
+-
+stdlib.h
+-
+queue.h
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab04Off/queue.h
+

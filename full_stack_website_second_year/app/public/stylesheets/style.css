@@ -1,0 +1,22 @@
+@import
+url('https://fonts.googleapis.com/css?family=Domine');
+
+h1 {
+	font-family: 'Domine', serif;
+}
+
+.navcolor {
+	font-family: 'Domine', serif;
+	background-color: black;
+	
+}
+
+.ca-footer-text{
+	font-family: 'Domine', serif;
+	font-size: 20px;
+}
+
+.header{
+	font-family: 'Domine', serif;
+	padding-bottom: 40px;
+}

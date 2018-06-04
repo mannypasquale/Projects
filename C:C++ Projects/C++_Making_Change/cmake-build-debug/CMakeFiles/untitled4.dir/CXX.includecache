@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/untitled4/NegativeValueException.h
+exception
+-
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/untitled4/main.cpp
+iostream
+-
+NegativeValueException.h
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/untitled4/NegativeValueException.h
+structsHead.h
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/untitled4/structsHead.h
+iomanip
+-
+cmath
+-
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/untitled4/structsHead.h
+

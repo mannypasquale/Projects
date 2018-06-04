@@ -1,0 +1,21 @@
+extends layout
+block content
+  
+  .row.pt-5.py-3
+    h2.pl-3.ca-header-font= pageHeader.tagline
+    
+  .row.py-3.pl-3
+    .col-12.col-md-8
+      each sailing in departures
+        .card.mt-4
+          .card-body
+            h4.card-title Brentwood Bay to Mill Bay
+            ul
+    
+
+            li Departing from Brentwood Bay at #{sailing.depart}
+            li Arriving at Mill Bay at #{sailing.arrive}
+            li Ferry Name: #{sailing.ferryName}
+            li Cost: #{sailing.fare}
+
+              a.card-link.btn.btn-primary.float-right.my-3(href='/departures/reserve-ferry') Reserve Now

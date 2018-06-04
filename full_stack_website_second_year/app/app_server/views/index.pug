@@ -1,0 +1,33 @@
+extends layout
+block content
+  .row.py-4
+    h1.pl-3.ca-header-font= pageHeader.title
+    p.lead.pl-4.pt-2.ca-header-font= pageHeader.tagline
+  .row.py-1
+    h2.pl-5.ca-header-font Pick a route:
+  
+    .row.py-3.pl-5
+      .col-12.col-md-8
+      
+        each ferry in departures
+          .card.mt-4
+            .card-body
+              h4.card-title #{ferry.origin} to #{ferry.destination}
+              h6.card-subtitle.text-muted.pt-1.float-left=ferry.frequency
+              if ferry.origin == 'BrentwoodBay'
+                if ferry.destination == 'MillBay'
+                  a.card-link.btn.btn-primary.float-right(href='/departures/brentwood') Departure Times
+              if ferry.origin == 'MillBay'
+                if ferry.destination == 'BrentwoodBay'
+                  a.card-link.btn.btn-primary.float-right(href='/departures/millbay') Departure Times
+              if ferry.origin == 'BrentwoodBay'
+                if ferry.destination == 'Neverland'
+                  a.card-link.btn.btn-primary.float-right(href='/departures/neverland') Departure Time
+              if ferry.origin == 'MillBay'
+                if ferry.destination == 'Fantasia'
+                  a.card-link.btn.btn-primary.float-right(href='/departures/fantasia') Departure Time
+
+
+      .col-12.col-md-4
+        p.lead.pl-4.pt-5.ca-header-font.ca-sb-color= sidebar
+          

@@ -1,0 +1,3 @@
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab04Off/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab04Off/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab04Off/cmake-build-debug/CMakeFiles/Lab04Off.dir

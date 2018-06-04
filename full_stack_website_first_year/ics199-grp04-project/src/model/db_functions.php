@@ -1,0 +1,306 @@
+<?php
+
+/** 
+ * This function takes in a first and last name
+ * and stores it in the database
+ *
+ * @param string $firstName - the firstName the user entered in the form.
+ * @param string $lastName - the lastName the user enterd in the form.
+ *
+ * @return void 
+ */
+function storeName($firstName, $lastName)
+{
+    global $dbc;
+    
+    $query = 'INSERT INTO tblNames (first_name, last_name) 
+        VALUES (:firstName, :lastName)';
+    $statement = $dbc->prepare($query);
+    $statement->bindValue(':firstName', $firstName);
+    $statement->bindValue(':lastName', $lastName);
+    $statement->execute();
+    $statement->closeCursor();
+
+}
+
+
+/**
+ * This function generates the result set of
+ * the tblNames table.
+ *
+ * @return array $names - an assoc. array which contains all the names stored in the DB.
+ */
+function getAllNames()
+{
+    global $dbc;
+    
+    $query = 'SELECT * from tblNames ORDER BY last_name';
+    $statement = $dbc->prepare($query);
+    $statement->execute();
+    $names = $statement->fetchAll();
+    $statement->closeCursor();
+    return $names;
+
+}
+
+/**
+ * This function generates the results set of the tblProducts in the specified category
+ *
+ * @param $meat String the category to limit the search with, defaults to all
+ * @return array $products - an assoc. array which contains all the names stored in the DB.
+ */
+function getProducts($meat)
+{
+    global $dbc;
+	
+	//determine what category we want to search for, default to everything
+    if ($meat == 'freshCuts'){
+        $where = "WHERE cat_id = 1;";
+    }
+    elseif($meat == 'sausages'){
+        $where = "WHERE cat_id = 2;";
+    }
+    else{
+        $where = '';
+    }
+    
+    $query = 'SELECT prod_id, prod_name, prod_weight, prod_price, prod_description, prod_image, cat_name 
+    FROM ICS199db.tblProducts 
+    JOIN ICS199db.tblCategory 
+    ON tblCategory_cat_id = cat_id ' . $where;
+
+    $statement = $dbc->prepare($query);
+    $statement->execute();
+    $products = $statement->fetchAll();
+    $statement->closeCursor();
+    return $products;
+
+}
+
+/**
+ * This function generates the results set of the tblProducts for the specified item
+ *
+ * @param $item String the item to limit the search with, defaults to all
+ * @return array $products - an assoc. array which contains all the names that match from the DB.
+ */
+function getItem($item)
+{
+    global $dbc;
+	$item = "%" . $item . "%";
+	
+    $query = "SELECT prod_id, prod_name, prod_weight, prod_price, prod_description, prod_image, cat_name
+                FROM ICS199db.tblProducts
+                JOIN ICS199db.tblCategory
+                ON tblCategory_cat_id = cat_id 
+				WHERE upper(prod_name) LIKE upper(:item) OR upper(cat_name) LIKE upper(:item);";
+    $statement = $dbc->prepare($query);
+	$statement->bindValue(':item', $item);
+    $statement->execute();
+    $products = $statement->fetchAll();
+    $statement->closeCursor();
+    return $products;
+}
+
+/**
+ * Helper function that looks up the customerID of a sessionID
+ *
+ * @param $sessionID String the sessionID to search for
+ * @return int $custID - the customerID
+ */
+function getCustomerID($sessionID){
+	global $dbc;
+	
+	//checks db to see if customer exists. If not, adds to customer table and creates a new order number.  Regardless, return the orderID
+	$query = 'SELECT session_id FROM ICS199db.tblCustomers WHERE session_id = :sessionID;';
+	$statement = $dbc->prepare($query);
+	$statement->bindValue(':sessionID', $sessionID);
+    $statement->execute();
+    $results = $statement->fetch();
+    $statement->closeCursor();
+	//var_dump($results);
+	//var_dump(empty($results));
+	
+	//TODO: this doesnt work properly, we overwrite the sessionID everytime... isset works as expected when
+	//you start with clear database but doesnt respond to there already being an entry
+	if(empty($results)){
+		//add new customer
+		//echo('adding new customer');
+		$query = 'INSERT INTO ICS199db.tblCustomers (session_id) VALUES (:sessionID);';
+		$statement = $dbc->prepare($query);
+		$statement->bindValue(':sessionID', $sessionID, PDO::PARAM_STR);
+		$statement->execute();
+		$statement->closeCursor();
+	}
+	
+	//we need cust_id to find our order
+	$query = 'SELECT cust_id FROM ICS199db.tblCustomers WHERE session_id = :sessionID;';
+	$statement = $dbc->prepare($query);
+	$statement->bindValue(':sessionID', $sessionID);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    $statement->closeCursor();
+	
+	//print_r($results[0]['cust_id']);
+	$custID = $results[0]['cust_id'];
+	return $custID;
+}
+
+/* Dont use an orderID anymore, custID + prodID gives unique rows
+function getOrderID($custID){
+	global $dbc;
+	
+	//do we have an existing order?
+	$query = 'SELECT order_id FROM ICS199db.tblOrder WHERE cust_id = ' . $custID . ';';
+	$statement = $dbc->prepare($query);
+    $statement->execute();
+    $results = $statement->fetchAll();
+    $statement->closeCursor();
+	
+	if(isset($results['order_id']) == false){
+		//new order - autogenerated in sql so dont set
+	} else {
+		echo('order_id is set');
+		$orderID = $results['order_id'];
+	}
+	
+	return $orderID;
+}
+*/
+
+/**
+ * A function that adds a customer's cart to the database
+ *
+ * @param $sessionID String the sessionID of the order
+ * @param $arrayOfProducts Array an array of productID:id qty:value keyvalue pairs
+ * @return int $custID - the customerID
+ */
+function addProductToDB($sessionID, $arrayOfProducts){
+	//prepare to talk to the database
+	global $dbc;
+	
+	$custID = getCustomerID($sessionID);
+	//is there already one of these in there?
+	
+	foreach($arrayOfProducts as $product){
+		$query = 'SELECT tblProducts_prod_id
+					FROM ICS199db.tblOrder
+					WHERE tblCustomers_cust_id = :custID
+					AND tblProducts_prod_id = :productID;';
+		$statement = $dbc->prepare($query);
+		$statement->bindValue(':custID', $custID);
+		$statement->bindValue(':productID', $product['productID']);
+		$statement->execute();
+		$results = $statement->fetchAll();
+		$statement->closeCursor();
+		//var_dump($results);
+		if(empty($results)){
+			//none exists, add new product
+			//echo('no products found');
+			$query = 'INSERT INTO ICS199db.tblOrder (tblProducts_prod_id, tblCustomers_cust_id, prod_qty)
+						VALUES (:productID, :custID, :qty)';
+			$statement = $dbc->prepare($query);
+			$statement->bindValue(':productID', $product['productID']);
+			$statement->bindValue(':custID', $custID);
+			$statement->bindValue(':qty', $product['qty']);
+			$statement->execute();
+			$statement->closeCursor();
+		} else {
+			//already there, just increase qty
+			$query = 'UPDATE ICS199db.tblOrder 
+						SET prod_qty = prod_qty + :qty
+						WHERE tblProducts_prod_id = :productID
+						AND tblCustomers_cust_id = :custID;';
+			$statement = $dbc->prepare($query);
+			$statement->bindValue(':productID', $product['productID']);
+			$statement->bindValue(':custID', $custID);
+			$statement->bindValue(':qty', $product['qty']);
+			$statement->execute();
+			$statement->closeCursor();
+		}
+	}
+}
+
+function getUserCart($sessionID){
+	 global $dbc;
+	
+	//determine what category we want to search for, default to everything
+    $custid = getCustomerID($sessionID);
+    //$custid = 1;
+    $query = 'SELECT p.prod_id, p.prod_name, p.prod_weight, p.prod_price, p.prod_image, o.prod_qty
+		FROM ICS199db.tblOrder o
+		JOIN ICS199db.tblProducts p
+		ON p.prod_id = o.tblProducts_prod_id
+		WHERE tblCustomers_cust_id = :cust_id;';
+
+    $statement = $dbc->prepare($query);
+	$statement->bindValue(':cust_id', $custid);
+    $statement->execute();
+    $products = $statement->fetchAll();
+    $statement->closeCursor();
+    return $products;
+
+}
+
+
+function removeProductFromDB($sessionID, $arrayOfProducts){
+	//prepare to talk to the database
+	global $dbc;
+	$custID = getCustomerID($sessionID);
+	
+	foreach($arrayOfProducts as $product){
+		$query = 'SELECT prod_qty
+					FROM ICS199db.tblOrder
+					WHERE tblCustomers_cust_id = :custID
+					AND tblProducts_prod_id = :productID;';
+		$statement = $dbc->prepare($query);
+		$statement->bindValue(':custID', $custID);
+		$statement->bindValue(':productID', $product['productID']);
+		$statement->execute();
+		$results = $statement->fetch();
+		$statement->closeCursor();
+	
+		//how many are there in the cart?  Grab the qty
+		$dbProductQty = $results['prod_qty'];
+
+		//var_dump($product['qty']);
+		//remove requested qty or all if it is >= to db qty
+		if($product['qty'] >= $dbProductQty){
+			//remove everything
+			//echo('deleting all these items');
+			$query = 'DELETE FROM ICS199db.tblOrder
+				WHERE tblCustomers_cust_id = :custID
+				AND tblProducts_prod_id = :productID;';
+			$statement = $dbc->prepare($query);
+			$statement->bindValue(':productID', $product['productID']);
+			$statement->bindValue(':custID', $custID);
+			$statement->execute();
+			$statement->closeCursor();
+		} else {
+			//remove specified qty - this is a UPDATE
+			$query = 'UPDATE ICS199db.tblOrder 
+						SET prod_qty = prod_qty - :qty
+						WHERE tblProducts_prod_id = :productID
+						AND tblCustomers_cust_id = :custID;';
+			$statement = $dbc->prepare($query);
+			$statement->bindValue(':productID', $product['productID']);
+			$statement->bindValue(':custID', $custID);
+			$statement->bindValue(':qty', $product['qty']);
+			$statement->execute();
+			$statement->closeCursor();
+		}
+	}
+}
+
+function clearCart($sessionID){
+	global $dbc;
+	$query = 'DELETE FROM ICS199db.tblOrder
+				WHERE tblCustomers_cust_id = :custID;';
+	$statement = $dbc->prepare($query);
+	$custID = getCustomerID($sessionID);
+	$statement->bindValue(':custID', $custID);
+	$statement->execute();
+	$statement->closeCursor();
+}
+
+
+?>

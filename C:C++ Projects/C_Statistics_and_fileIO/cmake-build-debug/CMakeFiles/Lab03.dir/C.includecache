@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab03/statistics.c
+math.h
+-
+statistics.h
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab03/statistics.h
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab03/statistics.h
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab03/statsMain.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+statistics.h
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/Lab03/statistics.h
+

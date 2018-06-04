@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/threadsinC/main.c
+stdio.h
+-
+stdlib.h
+-
+pthread.h
+-
+time.h
+-
+

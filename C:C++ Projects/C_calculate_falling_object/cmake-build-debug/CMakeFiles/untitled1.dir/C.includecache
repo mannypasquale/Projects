@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mannypasquale/Documents/ics_second_year/2ndSemester/ics214/untitled1/main.c
+stdio.h
+-
+math.h
+-
+stdbool.h
+-
+
